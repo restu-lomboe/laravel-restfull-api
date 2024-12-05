@@ -12,15 +12,15 @@ Route::get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
     // basic auth
     Route::middleware('basic_auth')->group(function () {
-        Route::post('/register', [AuthController::class, 'register']);
-        Route::post('/login', [AuthController::class, 'login']);
+        Route::post('/auth/register', [AuthController::class, 'register']);
+        Route::post('/auth/login', [AuthController::class, 'login']);
     });
 
     // sanctum
     Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('book')->group(function () {
             Route::post('/create', [BookController::class, 'create']);
-            Route::put('/update/:id', [BookController::class, 'update']);
+            Route::put('/update/{id}', [BookController::class, 'update']);
             Route::get('/list', [BookController::class, 'list']);
             Route::delete('/delete/{id}', [BookController::class, 'delete']);
         });

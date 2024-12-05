@@ -56,18 +56,19 @@ class BookController extends Controller
 
     public function list(Request $request)
     {
+
+        $request->validate([
+            /** @query */
+            'page' => ['required', 'integer'],
+            'perPage' => ['required', 'integer'],
+        ]);
+
         $page = $request->page ?? 1;
         $perPage = $request->perPage ?? 10;
 
         $offset = ($page - 1) * $perPage;
 
-        // $books = Book::paginate($perPage);
         $books = Book::paginate($perPage, ['*'], 'page', $page);
-        // $books = Book::simplePaginate($perPage, ['*'], 'page', $page);
-        // $books = \DB::table('books')
-        //                 ->offset($offset)
-        //                 ->limit($perPage)
-        //                 ->get();
 
         return response()->json(
             [
